@@ -1,8 +1,8 @@
 import './App.css'
 
-import {Components} from 'react'
+import {Component} from 'react'
 
-import BrowserHistory from './components/BrowserHistory'
+import BrowserHistory from './Components/BrowserHistory'
 
 const initialHistoryList = [
   {
@@ -80,7 +80,7 @@ const initialHistoryList = [
 ]
 
 class App extends Component {
-  state = {historyList: initialHistoryList, searchInput: '', emptyParagraph: ''}
+  state = {historyList: initialHistoryList, searchInput: ''}
 
   onChangeSearchInput = event => {
     this.setState({searchInput: event.target.value})
@@ -91,17 +91,17 @@ class App extends Component {
     const {historyList} = this.state
     const filteredData = historyList.filter(eachItem => eachItem.id !== id)
     console.log(filteredData)
-    if (filteredData === '') {
-      this.setState({emptyParagraph: 'There is no history to show'})
-    } else {
-      this.setState({emptyParagraph: ''})
-    }
+    // if (filteredData === '') {
+    //   this.setState({emptyParagraph: 'There is no history to show'})
+    // } else {
+    //   this.setState({emptyParagraph: ''})
+    // }
     this.setState({historyList: filteredData})
   }
 
   render() {
-    const {historyList, searchInput} = this.state
-    const searchResults = initialHistoryList.filter(eachItem =>
+    const {searchInput, historyList} = this.state
+    const searchResults = historyList.filter(eachItem =>
       eachItem.title.includes(searchInput),
     )
 
@@ -135,14 +135,14 @@ class App extends Component {
         <div className="bg-container">
           <div className="card-container">
             <ul>
-              {historyList.map(eachItem => (
+              {searchResults.map(eachItem => (
                 <BrowserHistory
                   onDeleteHistory={this.onDeleteHistory}
                   historyDetails={eachItem}
                   key={eachItem.id}
                 />
               ))}
-              <p>There is no history to show</p>
+              <p>{this.emptyParagraph}</p>
             </ul>
           </div>
         </div>
